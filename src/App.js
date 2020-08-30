@@ -3,8 +3,6 @@ import React, {
   useEffect,
   useContext,
 } from 'react';
-import { Link } from 'react-router-dom';
-import logo from './logo.svg';
 import './App.css';
 
 import {
@@ -15,17 +13,10 @@ import {
   getImageURL,
   logIn,
   logOut,
-  loginWithSessionPersistence,
-  fastLogin,
   initializeFirebase,
-  debug,
-  getIdToken,
   FirebaseContext,
   addOnAuthChange,
 } from './shared/Firebase.config';
-
-import localStorage from './shared/LocalStorage';
-import useLocalStorage from './shared/LocalStorage';
 
 function App() {
   const [data, setData] = useState({ memo: [] });
@@ -35,10 +26,6 @@ function App() {
   useEffect(() => {
     initializeFirebase();
     addOnAuthChange(setUser);
-    // if (token != null) {
-    //   fastLogin(token);
-    // }
-    //firestorage();
   });
 
   useEffect(() => {
@@ -65,11 +52,23 @@ function App() {
     <div className="App">
       <h1>Schedule</h1>
       {user !== null ? (
-        data.memo.length ? (
+        Object.keys(data.memo).length ? (
           <div>
-            <p>title: {data.memo[0].title}</p>
-            <p>desc: {data.memo[0].desc}</p>
             <div>
+              <div>
+                {Object.keys(data.memo).map((key) => {
+                  const { desc, title } = data.memo[key];
+
+                  return (
+                    <div key={key}>
+                      <hr />
+                      <h2>{key}</h2>
+                      <p>title: {title}</p>
+                      <p>desc: {desc}</p>
+                    </div>
+                  );
+                })}
+              </div>
               <button
                 onClick={() => {
                   firestorage();
@@ -96,11 +95,7 @@ function App() {
         <div>
           <button
             onClick={() => {
-              logIn().then((resolve) => {
-                getIdToken().then((idToekn) => {
-                  setUser(idToekn);
-                });
-              });
+              logIn();
             }}
           >
             구글 로그인 할꺼임 ㅎㅎ

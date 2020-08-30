@@ -56,32 +56,7 @@ export const setMemo = async (title, desc) => {
   });
 };
 
-export const getIdToken = async () => {
-  try {
-    const idToken = await firebase
-      .auth()
-      .currentUser.getIdToken();
-
-    return idToken;
-  } catch (error) {
-    return error;
-  }
-};
-
 //////////////log in
-const provider = new firebase.auth.GoogleAuthProvider();
-provider.addScope(
-  'https://www.googleapis.com/auth/contacts.readonly',
-);
-//firebase.auth().languageCode = 'pt';
-provider.setCustomParameters({
-  login_hint: 'user@example.com',
-});
-
-export const debug = (user) => {
-  console.log(user);
-};
-
 export const addOnAuthChange = (setUser) => {
   firebase.auth().onAuthStateChanged((connectedUser) => {
     if (connectedUser != null) {
@@ -90,42 +65,26 @@ export const addOnAuthChange = (setUser) => {
   });
 };
 
-export const fastLogin = async (token) => {
-  const credential = await firebase.auth.GoogleAuthProvider.credential(
-    token,
+export const logIn = () => {
+  const provider = new firebase.auth.GoogleAuthProvider();
+  provider.addScope(
+    'https://www.googleapis.com/auth/contacts.readonly',
   );
-  const {
-    uid,
-  } = await firebase
-    .auth()
-    .signInWithCredential(credential);
-
-  return uid;
-};
-
-export const logIn = async () => {
-  let token = null;
-  let user = null;
-  let _error = null;
+  //firebase.auth().languageCode = 'pt';
+  provider.setCustomParameters({
+    login_hint: 'user@example.com',
+  });
 
   try {
-    const result = await firebase
-      .auth()
-      .signInWithPopup(provider);
-
-    token = result.credential.accessToken;
-    user = result.user;
-
-    return token;
+    firebase.auth().signInWithPopup(provider);
   } catch (error) {
-    _error = error;
     // Handle Errors here.
-    var errorCode = error.code;
-    var errorMessage = error.message;
+    // var errorCode = error.code;
+    // var errorMessage = error.message;
     // The email of the user's account used.
-    var email = error.email;
+    // var email = error.email;
     // The firebase.auth.AuthCredential type that was used.
-    var credential = error.credential;
+    // var credential = error.credential;
     // ...
 
     return error;
