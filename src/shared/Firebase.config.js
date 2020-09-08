@@ -5,7 +5,7 @@ let database = null;
 let storage = null;
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyBxRZ3MW_gda65IAFbOvdNerGbNoAxzdTU',
+  apiKey: '',
   authDomain: 'testproject-dd0dd.firebaseapp.com',
   databaseURL: 'https://testproject-dd0dd.firebaseio.com',
   projectId: 'testproject-dd0dd',
